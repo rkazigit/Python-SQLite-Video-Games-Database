@@ -1,1 +1,1 @@
-# Python-SQLite-Video-Games-Database
+# Python SQLite - Video Games Database

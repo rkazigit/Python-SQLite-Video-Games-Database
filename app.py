@@ -170,7 +170,42 @@ def prompt_games_by_rating(connection):
     print(f"\n  Games rated {low}–{high}:")
     print_games(games)
 
-
+def auth_loop(connection):
+    """Returns True once a user has successfully authenticated."""
+    while True:
+        choice = input(AUTH_MENU)
+        if choice == "1":
+            if prompt_login(connection):
+                return True
+        elif choice == "2":
+            prompt_register(connection)
+        elif choice == "3":
+            print("  Goodbye!")
+            return False
+        else:
+            print("  Invalid option.")
+ 
+ 
+def main_loop(connection):
+    while True:
+        choice = input(MENU_PROMPT)
+        if choice == "1":
+            prompt_add_new_game(connection)
+        elif choice == "2":
+            prompt_see_all_games(connection)
+        elif choice == "3":
+            prompt_find_game(connection)
+        elif choice == "4":
+            prompt_find_best_platform(connection)
+        elif choice == "5":
+            prompt_delete_game(connection)
+        elif choice == "6":
+            prompt_games_by_rating(connection)
+        elif choice == "7":
+            print("  Logged out.\n")
+            break
+        else:
+            print("  Invalid input, please try again.")
 
 def menu():
     connection = database.connect()

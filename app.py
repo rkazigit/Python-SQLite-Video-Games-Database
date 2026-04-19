@@ -55,9 +55,35 @@ def print_games(games):
         for game in games:
             print_game(game)
     else:
-        print("No games found.")
+        print(" No games found.")
 
 
+def prompt_login(connection):
+    username = input("Username: ")
+    password = input("Password: ")
+    user = database.get_user(connection, username, password)
+    if user:
+        print(f"\n  Welcome back, {username}!")
+        return True
+    else:
+        print(" Hm. Invalid username or password.")
+        return False
+ 
+ 
+def prompt_register(connection):
+    username = input("Choose a username: ")
+    if database.username_exists(connection, username):
+        print("  That username is already taken. Try a different one.")
+        return False
+    password = input("Choose a password: ")
+    confirm = input("Confirm password: ")
+    if password != confirm:
+        print("  Passwords do not match.")
+        return False
+    success = database.add_user(connection, username, password)
+    if success:
+        print(f"  Account created! You can now log in as '{username}'.")
+    return success
 
 def menu():
     connection = database.connect()
@@ -73,29 +99,32 @@ def menu():
         elif user_input == "4":
             prompt_find_best_platform(connection)
         else:
-            print("Invalid input, please try again.")
+            print("Hm. Invalid input, please try again.")
  
 def prompt_add_new_game(connection):
     name = input("Enter game name: ")
     platform = input("Enter the platform you played it on: ")
     rating = int(input("Enter your rating score (0-100): "))
     database.add_game(connection, name, platform, rating)
+    print(f"  '{name}' added successfully!")
  
 def prompt_see_all_games(connection):
     games = database.get_all_games(connection)
-    for game in games:
-        print(f"{game[1]} ({game[2]}) - {game[3]}/100")
- 
+    print_games(games)
+
 def prompt_find_game(connection):
     name = input("Enter game name to find: ")
     games = database.get_games_by_name(connection, name)
-    for game in games:
-        print(f"{game[1]} ({game[2]}) - {game[3]}/100")
+    print_games(games)
  
 def prompt_find_best_platform(connection):
     name = input("Enter game name to find: ")
-    best_platform = database.get_best_platform_for_game(connection, name)
-    print(f"The best platform for {name} is: {best_platform[2]}")
+    best = database.get_best_platform_for_game(connection, name)
+    if best:
+        print(f"  Best platform for '{name}': {best[2]}  ({best[3]}/100)")
+    else:
+        print(f"  No entries found for '{name}'.")
  
  
 menu()
+

@@ -51,7 +51,6 @@ def delete_game_by_name(connection, name):
         cursor = connection.execute(DELETE_GAME_BY_NAME, (name,))
         return cursor.rowcount  # number of rows deleted
 
-
 def delete_game_by_id(connection, game_id):
     with connection:
         cursor = connection.execute(DELETE_GAME_BY_ID, (game_id,))

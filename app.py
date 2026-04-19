@@ -46,6 +46,18 @@ Select a rating range to display:
 Your selection: """
 
 
+def print_game(game):
+    print(f"  [{game[0]}] {game[1]} ({game[2]}) - {game[3]}/100")
+ 
+ 
+def print_games(games):
+    if games:
+        for game in games:
+            print_game(game)
+    else:
+        print("No games found.")
+
+
 
 def menu():
     connection = database.connect()

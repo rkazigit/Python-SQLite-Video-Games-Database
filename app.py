@@ -110,7 +110,7 @@ def prompt_find_best_platform(connection):
     else:
         print(f"  Hm. No entries found for '{name}'.")
  
- def prompt_delete_game(connection):
+def prompt_delete_game(connection):
     choice = input(DELETE_MENU)
  
     if choice == "1":
@@ -210,6 +210,12 @@ def main_loop(connection):
 def menu():
     connection = database.connect()
     database.create_tables(connection)
+
+    while True:
+        logged_in = auth_loop(connection)
+        if not logged_in:
+            break          
+        main_loop(connection)  
 
 menu()
 

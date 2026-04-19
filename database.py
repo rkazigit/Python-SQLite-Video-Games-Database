@@ -29,7 +29,7 @@ def create_tables(connection):
     with connection:
         connection.execute(CREATE_GAMES_TABLE)
         connection.execute(CREATE_USERS_TABLE)
-        
+
 def add_game(connection, name, platform, rating):
     with connection:
         connection.execute(INSERT_GAME, (name, platform, rating))
@@ -45,3 +45,36 @@ def get_games_by_name(connection, name):
 def get_best_platform_for_game(connection, name):
     with connection:
         return connection.execute(GET_BEST_PLATFORM_FOR_GAME, (name,)).fetchone()
+    
+def delete_game_by_name(connection, name):
+    with connection:
+        cursor = connection.execute(DELETE_GAME_BY_NAME, (name,))
+        return cursor.rowcount  # number of rows deleted
+
+
+def delete_game_by_id(connection, game_id):
+    with connection:
+        cursor = connection.execute(DELETE_GAME_BY_ID, (game_id,))
+        return cursor.rowcount
+
+#user/password
+
+
+def add_user(connection, username, password):
+    
+    try:
+        with connection:
+            connection.execute(INSERT_USER, (username, password))
+        return True
+    except sqlite3.IntegrityError:
+        return False
+ 
+ 
+def get_user(connection, username, password):
+    with connection:
+        return connection.execute(GET_USER, (username, password)).fetchone()
+ 
+ 
+def username_exists(connection, username):
+    with connection:
+        return connection.execute(GET_USER_BY_USERNAME, (username,)).fetchone() is not None

@@ -33,6 +33,18 @@ How would you like to delete?
  
 Your selection: """
 
+RATING_MENU = """
+Select a rating range to display:
+ 
+1)  0 – 49   (Poor)
+2) 50 – 69   (Average)
+3) 70 – 89   (Good)
+4) 90 – 100  (Excellent)
+5) Custom range
+6) Cancel
+ 
+Your selection: """
+
 
 
 def menu():

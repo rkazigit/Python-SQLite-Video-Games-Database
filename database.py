@@ -41,6 +41,10 @@ def get_all_games(connection):
 def get_games_by_name(connection, name):
     with connection:
         return connection.execute(GET_GAMES_BY_NAME, (name,)).fetchall()
+    
+def get_games_by_rating_range(connection, low, high):
+    with connection:
+        return connection.execute(GET_GAMES_BY_RATING_RANGE, (low, high)).fetchall()
  
 def get_best_platform_for_game(connection, name):
     with connection:

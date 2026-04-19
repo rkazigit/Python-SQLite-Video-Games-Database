@@ -24,6 +24,17 @@ Please choose one of these options:
  
 Your selection:"""
 
+DELETE_MENU = """
+How would you like to delete?
+ 
+1) Delete by name
+2) Delete by ID
+3) Cancel
+ 
+Your selection: """
+
+
+
 def menu():
     connection = database.connect()
     database.create_tables(connection)

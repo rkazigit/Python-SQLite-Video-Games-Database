@@ -1,11 +1,14 @@
 import sqlite3
 
 CREATE_GAMES_TABLE = "CREATE TABLE IF NOT EXISTS games (id INTEGER PRIMARY KEY, name TEXT, platform TEXT, rating INTEGER);"
+CREATE_USERS_TABLE = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT);"
 
 INSERT_GAME = "INSERT INTO games (name, platform, rating) VALUES (?, ?, ?);"
- 
+INSERT_USER = "INSERT INTO users (username, password) VALUES (?, ?);"
+
 GET_ALL_GAMES = "SELECT * FROM games;"
 GET_GAMES_BY_NAME = "SELECT * FROM games WHERE name = ?;"
+GET_GAMES_BY_RATING_RANGE = "SELECT * FROM games WHERE rating BETWEEN ? AND ? ORDER BY rating DESC;"
 GET_BEST_PLATFORM_FOR_GAME = """
 SELECT * FROM games
 WHERE name = ?

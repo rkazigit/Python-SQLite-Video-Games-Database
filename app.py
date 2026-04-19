@@ -1,5 +1,15 @@
 import database
 
+AUTH_MENU = """
+ -- Video Game Tracker --
+ 
+1) Login
+2) Register
+3) Exit
+ 
+Your selection: """
+
+
 MENU_PROMPT = """ -- Video Game Tracker --
  
 Please choose one of these options:

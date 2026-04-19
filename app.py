@@ -85,21 +85,6 @@ def prompt_register(connection):
         print(f"  Account created! You can now log in as '{username}'.")
     return success
 
-def menu():
-    connection = database.connect()
-    database.create_tables(connection)
- 
-    while (user_input := input(MENU_PROMPT)) != "5":
-        if user_input == "1":
-            prompt_add_new_game(connection)
-        elif user_input == "2":
-            prompt_see_all_games(connection)
-        elif user_input == "3":
-            prompt_find_game(connection)
-        elif user_input == "4":
-            prompt_find_best_platform(connection)
-        else:
-            print("Hm. Invalid input, please try again.")
  
 def prompt_add_new_game(connection):
     name = input("Enter game name: ")
@@ -123,8 +108,73 @@ def prompt_find_best_platform(connection):
     if best:
         print(f"  Best platform for '{name}': {best[2]}  ({best[3]}/100)")
     else:
-        print(f"  No entries found for '{name}'.")
+        print(f"  Hm. No entries found for '{name}'.")
  
+ def prompt_delete_game(connection):
+    choice = input(DELETE_MENU)
  
+    if choice == "1":
+        name = input("Enter the exact game name to delete: ")
+        rows = database.delete_game_by_name(connection, name)
+        if rows:
+            print(f"  Deleted {rows} entry/entries named '{name}'.")
+        else:
+            print(f" Hm. No game named '{name}' was found.")
+ 
+    elif choice == "2":
+        try:
+            game_id = int(input("Enter the game ID to delete: "))
+        except ValueError:
+            print("  Hm. Invalid ID. Please enter a number.")
+            return
+        rows = database.delete_game_by_id(connection, game_id)
+        if rows:
+            print(f"  Game with ID {game_id} deleted.")
+        else:
+            print(f"  No game with ID {game_id} was found.")
+ 
+    elif choice == "3":
+        print("  Deletion cancelled.")
+    else:
+        print("  Hm. Invalid option.")
+
+def prompt_games_by_rating(connection):
+    choice = input(RATING_MENU)
+ 
+    ranges = {
+        "1": (0, 49),
+        "2": (50, 69),
+        "3": (70, 89),
+        "4": (90, 100),
+    }
+ 
+    if choice in ranges:
+        low, high = ranges[choice]
+    elif choice == "5":
+        try:
+            low = int(input("Enter minimum rating (0-100): "))
+            high = int(input("Enter maximum rating (0-100): "))
+            if not (0 <= low <= 100 and 0 <= high <= 100 and low <= high):
+                print(" Hm. Invalid range.")
+                return
+        except ValueError:
+            print("  Enter valid numbers.")
+            return
+    elif choice == "6":
+        return
+    else:
+        print("  Hm. Invalid option.")
+        return
+ 
+    games = database.get_games_by_rating_range(connection, low, high)
+    print(f"\n  Games rated {low}–{high}:")
+    print_games(games)
+
+
+
+def menu():
+    connection = database.connect()
+    database.create_tables(connection)
+
 menu()
 

@@ -15,13 +15,21 @@ WHERE name = ?
 ORDER BY rating DESC
 LIMIT 1;"""
 
+DELETE_GAME_BY_NAME = "DELETE FROM games WHERE name = ?;"
+DELETE_GAME_BY_ID = "DELETE FROM games WHERE id = ?;"
+
+GET_USER = "SELECT * FROM users WHERE username = ? AND password = ?;"
+GET_USER_BY_USERNAME = "SELECT * FROM users WHERE username = ?;"
+
+
 def connect():
     return sqlite3.connect("data.db")
  
 def create_tables(connection):
     with connection:
         connection.execute(CREATE_GAMES_TABLE)
- 
+        connection.execute(CREATE_USERS_TABLE)
+        
 def add_game(connection, name, platform, rating):
     with connection:
         connection.execute(INSERT_GAME, (name, platform, rating))
